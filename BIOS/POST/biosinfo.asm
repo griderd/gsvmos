@@ -1,2 +1,0 @@
-; biosinfo.asm
-
