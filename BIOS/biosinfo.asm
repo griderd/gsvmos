@@ -1,11 +1,14 @@
 ; biosinfo.asm
 
+; PURPOSE: Prints BIOS info onto the screen
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Fields
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 string vers "Grider Monolithic BIOS v1.0\0"
 string copyright "Copyright (C) 2019, Grider Software\0"
+string delSetup "Press DEL to enter setup.\0"
 
 string logo0 " ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ \0"
 string logo1 "▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌\0"
@@ -24,12 +27,25 @@ ushort logopos 50
 
 ptr[11] logo {@logo0,@logo1,@logo2,@logo3,@logo4,@logo5,@logo6,@logo7,@logo8,@logo9,@logo10}
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Subroutines
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ; Prints the BIOS name/version and copyright info onto the screen
+; as well as the setup instructions
 printvers:
   mov eax, vers_0
   call printline
   mov eax, copyright_0
   call printline
+
+  mov al, 0
+  mov ah, 25
+  call setcursor
+  mov eax, delSetup_0
+  call printline
+  mov eax, 0
+  call setcursor
   ret
 
 ; Draws the logo onto the screen
