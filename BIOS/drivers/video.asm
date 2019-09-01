@@ -57,9 +57,11 @@ inccursor:
   write vidCol, edx
   ; Check if we've reached the end of the line
   cmp edx, COLS
+  jl inccursor_endif
   call newline
-  pop edx
-  ret
+  inccursor_endif:
+    pop edx
+    ret
   
 ; Prints the provided character to the current cell
 ; AL - Literal character to print
@@ -110,9 +112,27 @@ print:
 ; Prints the provided c-string followed by a line break
 ; EAX - Address of the first character of the string
 printline:
-  jmp print
-  jmp newline
+  call print
+  call newline
   ret
+
+; Prints a line feed and a carriage return
+newline:
+  push eax
+  mov eax, 0
+  write vidCol, eax
+  read eax, vidRow
+  add eax, 1
+  write vidRow, eax
+  
+  cmp eax, ROWS
+  jne newline_endif
+  call clearscreen
+
+  newline_endif:
+  pop eax
+  ret
+
 
 ; Clears the screen
 clearscreen:

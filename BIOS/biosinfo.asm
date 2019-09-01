@@ -25,7 +25,7 @@ string logo10 " ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀�
 ; initial position of (0,50) in the format of (ah,al)
 ushort logopos 50
 
-ptr[11] logo {@logo0,@logo1,@logo2,@logo3,@logo4,@logo5,@logo6,@logo7,@logo8,@logo9,@logo10}
+ptr[11] logo {@logo0_0,@logo1_0,@logo2_0,@logo3_0,@logo4_0,@logo5_0,@logo6_0,@logo7_0,@logo8_0,@logo9_0,@logo10_0}
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Subroutines
@@ -40,10 +40,10 @@ printvers:
   call printline
 
   mov al, 0
-  mov ah, 25
+  mov ah, 24
   call setcursor
   mov eax, delSetup_0
-  call printline
+  call print
   mov eax, 0
   call setcursor
   ret
@@ -68,7 +68,8 @@ drawlogo:
     ; Pop the logo pointer back to AX, dereference it, and print the line
     pop ax
     deref ax, ax
-    call println
+    ;brk
+    call print
     
     ; Update the position of the next line
     read ax, logopos
@@ -79,7 +80,7 @@ drawlogo:
     pop ax
     add ax, 2
     
-    jmp
+    jmp drawlogo_loop
   
   drawlogo_endloop:
     ; reset the cursor position to (0,0)

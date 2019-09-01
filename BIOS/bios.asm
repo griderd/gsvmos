@@ -12,14 +12,16 @@ nop
 
 jmp main
 
+%include drivers\video.asm
+%include idt.asm
+%include biosinterrupts.asm
 %include biosinfo.asm
-%include video.asm
 ;%include /POST/post.asm
 
 main:
     ; INITIALIZATION
     ; setup video memory
-    mov smv, VIDEO
+    mov svm, VIDEO
   
     ; setup interrupt table
     call init_idt
@@ -28,3 +30,4 @@ main:
     ; Draw the screen
     call drawlogo
     call printvers
+    hlt
