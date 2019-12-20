@@ -10,13 +10,24 @@ nop
 nop
 nop
 
+; Next, the computer needs to jump to the entry point.
+; The main function is going to get stuck at the end of all the includes.
 jmp main
 
 %include drivers\video.asm
 %include idt.asm
+%include drivers\gsbio.asm
+%include drivers\keyboard.asm
 %include biosinterrupts.asm
 %include biosinfo.asm
-;%include /POST/post.asm
+%include POST\post.asm
+%include memory.asm
+%include boot.asm
+%include config.asm
+
+string inttest "INTTEST\0"
+
+ushort sbreq 0
 
 main:
     ; INITIALIZATION
@@ -26,8 +37,19 @@ main:
     ; setup interrupt table
     call init_idt
     call initbiosidt
+
+    ; install keyboard
+    call installKeyboard    
     
     ; Draw the screen
     call drawlogo
     call printvers
+    call printline
+
+    ; Begin POST
+    call post
+
+    ; Boot disk
+    jmp boot
+
     hlt

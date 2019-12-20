@@ -171,7 +171,7 @@ printdec:
 
   ; DL is the digit/character
   cmp eax, 0
-  jne print_zero
+  je print_zero
 
   printdec_loop1:
     mov edx, eax
@@ -197,7 +197,7 @@ printdec:
 
   print_zero:
     mov al, 48
-    jmp printc
+    call printc
 
   print_end:
     popa

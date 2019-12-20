@@ -2,7 +2,7 @@
 ; Interrupt descriptor table
 ; https://en.wikipedia.org/wiki/Interrupt_descriptor_table
 
-int[256] __idt {default}
+ushort[256] __idt {default}
 
 ; Initializes the IDT
 init_idt:
@@ -15,7 +15,8 @@ init_idt:
 set_idt:
 	pusha
 	mov ecx, idt
-	add ecx, al
+	mult ax, 2
+	add ecx, ax
 	write ecx, ebx
 	popa
 	ret

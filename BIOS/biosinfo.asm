@@ -34,18 +34,20 @@ ptr[11] logo {@logo0_0,@logo1_0,@logo2_0,@logo3_0,@logo4_0,@logo5_0,@logo6_0,@lo
 ; Prints the BIOS name/version and copyright info onto the screen
 ; as well as the setup instructions
 printvers:
-  mov eax, vers_0
-  call printline
-  mov eax, copyright_0
-  call printline
-
   mov al, 0
   mov ah, 24
   call setcursor
   mov eax, delSetup_0
   call print
-  mov eax, 0
+
+  mov ax, 0
   call setcursor
+
+  mov eax, vers_0
+  call printline
+  mov eax, copyright_0
+  call printline
+
   ret
 
 ; Draws the logo onto the screen
@@ -68,7 +70,6 @@ drawlogo:
     ; Pop the logo pointer back to AX, dereference it, and print the line
     pop ax
     deref ax, ax
-    ;brk
     call print
     
     ; Update the position of the next line
