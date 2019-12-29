@@ -9,17 +9,17 @@ memcopy:
     mov edx, 0
 
     memcopy_loop:
-        cmp dx, cx
+        cmp edx, ecx
         jge memcopy_endloop
 
-        push dx
-        read dl, bx
-        write ax, dl
-        pop dx
+        push edx
+        read dl, ebx
+        write eax, dl
+        pop edx
 
-        add ax, 1
-        add bx, 1
-        add dx, 1
+        add eax, 1
+        add ebx, 1
+        add edx, 1
         jmp memcopy_loop
 
     memcopy_endloop:

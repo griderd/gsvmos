@@ -1,5 +1,7 @@
 ; config.asm
 
+%include config.cfg
+
 string cfg "SYSTEM CONFIGURATION\0"
 
 config:

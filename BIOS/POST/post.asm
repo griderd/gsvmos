@@ -2,8 +2,8 @@
 
 %include POST\memorycheck.asm
 %include drivers\disk.asm
-%include POST\bootcheck.asm
 %include drivers\delay.asm
+%include POST\hardwaredetect.asm
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Fields
@@ -35,14 +35,20 @@ post:
     call newline
 
     ; Check for bootable disks
-    call bootcheck
+    ;call bootcheck
 
     mov eax, 15000
     call delay
     call clearscreen
 
     ; TODO: Setup devices
+    ; Check for hardware
+    call detect
 
+    mov eax, 15000
+    call delay
+    call clearscreen
+    
     ret
 
 printcpuid:

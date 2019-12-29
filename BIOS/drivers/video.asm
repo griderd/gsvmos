@@ -5,7 +5,7 @@
 ; Definitions
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-%define VIDEO 5120
+%define VIDEO 8192
 
 %define COLS 80
 %define ROWS 25
@@ -87,6 +87,7 @@ printc:
 ; Prints the provided c-string
 ; EAX - Address of the first character of the string
 print:
+  pusha
   ; EBX is the write address
   call getcursor
 
@@ -107,6 +108,7 @@ print:
     jmp printloop
 
   printloop_end:
+    popa
     ret
 
 ; Prints the provided c-string followed by a line break

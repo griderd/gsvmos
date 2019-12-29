@@ -75,5 +75,3 @@ initbiosidt:
 		cmp al, 22
 		jl copyidt
 		ret
-		
-		

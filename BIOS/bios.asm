@@ -44,7 +44,7 @@ main:
     ; Draw the screen
     call drawlogo
     call printvers
-    call printline
+    call newline
 
     ; Begin POST
     call post

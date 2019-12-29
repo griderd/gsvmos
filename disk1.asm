@@ -4,7 +4,7 @@
 ; Pad to the size of a 1.44 MB floppy
 %pragma pad 1474560
 ; Offset to the OS position
-%pragma offset 7120
+%pragma offset 10240
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; BOOT SECTOR
@@ -21,4 +21,5 @@ bootstrap:
 
     hlt
 byte[435] empty {default}
+;byte[427] empty {default}
 ushort sig 47974

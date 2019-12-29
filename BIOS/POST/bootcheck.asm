@@ -28,20 +28,24 @@ bootcheck:
     mov eax, detecting_0
     call printline
 
-    ; EAX is flexible
-    ; EBX is disk count
-    ; ECX is working disk address
-    ; EDX is drive string address
+    ; EAX - working register
+    ; EBX - stores current array index
 
     mov eax, 0
     mov ebx, 0
-    mov ecx, workingDisks_0
-    mov edx, drives_0
+
+    sa workingDisks_0, 4
+
     bootcheck_loop:
-        cmp ebx, 5
+        cmp aei, 5
         jge bootcheck_endloop
 
+        mov ebx, aei
+        sa workingDisks_0, 4
+        sai ebx
+
         ; Handshake the drive. The handshake return is placed in EAX and should be 254.
+        mov ebx, aei
         mov eax, ebx
         pusha
         call handshake
@@ -56,20 +60,22 @@ bootcheck:
 
         ; Then mark the drive as working
         mov eax, 1
-        write ecx, ax
+        write aep, eax
         
         ; Then print the drive to the screen
-        mov eax, edx
-        deref ax, ax
+        ; -- Set up a new array iterator
+        sa drives_0, 2
+        ; -- Set the index
+        sai ebx
+        ; -- Print the drive
+        deref eax, aep
         pusha
         call printline
         popa
 
         bootcheck_loop_endif:
-            ; Increment the counter and pointers and loop back
-            add ebx, 1
-            add ecx, 4
-            add edx, 2
+            ; Increment pointers
+            inca
             jmp bootcheck_loop
 
         bootcheck_endloop:

@@ -50,41 +50,35 @@ printvers:
 
   ret
 
-; Draws the logo onto the screen
 drawlogo:
-  mov ax, logo_0
-  
+  mov ax, 50
+  write logopos, ax
+  sa logo_0, 2
+
   drawlogo_loop:
-    cmp ax, logo_10
+    cmp aei, 10
     jg drawlogo_endloop
-  
+
   drawlogo_loopbody:
-    ; AX is currently pointed to the logo. Store it a couple times
-    push ax
-    push ax
-    
-    ; Read the logo position to AX and set the cursor position.
+    ; read the logo position and set the cursor to that spot
     read ax, logopos
     call setcursor
-    
-    ; Pop the logo pointer back to AX, dereference it, and print the line
-    pop ax
-    deref ax, ax
+
+    ; dereference the array element pointer and print the line
+    deref ax, aep
     call print
-    
-    ; Update the position of the next line
+
+    ; update the line position
     read ax, logopos
     add ah, 1
     write logopos, ax
-    
-    ; Get the logo pointer again
-    pop ax
-    add ax, 2
-    
+
+    ; increment the logo pointer
+    inca
+
     jmp drawlogo_loop
-  
+
   drawlogo_endloop:
-    ; reset the cursor position to (0,0)
     mov ax, 0
     call setcursor
     ret

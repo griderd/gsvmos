@@ -1,24 +1,13 @@
 ; boot.asm
 
-%define _OS_ 7120
-
-int bootdisk 1
+%define _OS_ 10240
 
 boot:
-    read eax, bootdisk
+    mov eax, 0
+    read eax, bootDiskPort
     mov ebx, 0
+    mov ecx, 512
+    mov edx, _OS_
     call readdisk
-
-    ; Clear the registers
-    xor eax, eax
-    xor ebx, ebx
-    xor ecx, ecx
-    xor edx, edx
-
-    ; Copy to the OS location
-    mov ax, _OS_
-    mov bx, dr_data_0
-    mov cx, 512
-    call memcopy
 
     jmp _OS_

@@ -8,7 +8,6 @@
 %define CTRL_HSACK 4
 %define CTRL_ERROR 5
 
-
 serialrequest:
     byte sr_control 0
     uint sr_data 0
@@ -29,6 +28,7 @@ serialout:
 ; Port: EAX
 serialin:
 	mov ebx, serialrequest
+	mov ecx, 5
 	in
 	read bl, sr_control
 	read ecx, sr_data

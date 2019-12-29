@@ -10,52 +10,36 @@ dskreq:
 	byte dr_read 0
 	uint dr_address 0
 	uint dr_length 0
-	int dr_error 0
 	byte[512] dr_data {default}
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Functions
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-; Sends a handshake to the provided disk
-; Disk port: EAX
-handshake:
-	mov edx, 254
-	write dr_error, edx
-	mov edx, 1
-	write dr_read, edx
-	mov ebx, dskreq
-	mov ecx, 525
-	out
-	in
-	read eax, dr_error
-	cmp eax, 0
-	je handshakeReadData
-	ret
-	
-	handshakeReadData:
-		read eax, dr_data_0
-		ret
-
-; Requests a 512-byte sector from the provided disk
-; Disk port: EAX
-; Sector index: EBX
+; Sets up the disk request
+; EAX - Port
+; EBX - Disk Address
+; ECX - Length
+; EDX - Memory Address
 readdisk:
-	mov ecx, 1
-	write dr_read, ecx
-	mult ebx, 512
+	; Preps the request
+	write dr_read, 0
 	write dr_address, ebx
-	mov ebx, 512
-	write dr_length, ebx
-	mov ebx, 0
-	write dr_error, ebx
+	write dr_length, ecx
+
+	; Send the disk request
 	mov ebx, dskreq
-	mov ecx, 525
+	mov ecx, 9
 	out
+
+	; Get the requested data
+	mov ecx, 521
 	in
-	
-	; TODO: Implement read error
-	; cmp error, 0
-	; jg readerror
+
+	; Copy the data to the destination with memcopy
+	mov eax, edx
+	mov ebx, dr_data_0
+	read ecx, dr_length
+	call memcopy
 
 	ret
