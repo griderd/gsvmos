@@ -48,6 +48,11 @@ memorycheck:
         memorycheck_endif:
             add eax, 1
 
+            ; Check if overflow
+            ; 16-bit addresses only hold 0-65535
+            cmp eax, 65535
+            jg memorycheck_endloop
+
             jmp memorycheck_loop
         
     memorycheck_endloop:

@@ -26,6 +26,7 @@ jmp main
 %include config.asm
 
 string inttest "INTTEST\0"
+string inttesx "        "
 
 ushort sbreq 0
 
@@ -50,6 +51,8 @@ main:
     call post
 
     ; Boot disk
+    mov eax, 100
+    call delay
     jmp boot
 
     hlt

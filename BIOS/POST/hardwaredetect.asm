@@ -8,7 +8,7 @@ ushort[32] deviceID {default}
 ; List of interrupt channels, one for each possible device
 uint[32] interruptChannel {default}
 ; Last used IDT
-uint lastIDT 22
+uint lastIDT 25
 
 string detectingDevices "Detecting devices...\0"
 string gsb "Generic Serial Bus (\0"

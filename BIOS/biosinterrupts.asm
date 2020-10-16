@@ -61,7 +61,19 @@ int_clearscreen:
 	call clearscreen
 	ret
 
-ptr[22] biosidt {@int_divByZero,@int_trapFlag,@int_nmi,@int_breakpoint,@int_overflow,@int_bounds,@int_invalidOpcode,@int_unused,@int_doubleFault,@int_unused,@int_unused,@int_unused,@int_stackFault,@int_generalProtectionFault,@int_pageFault,@int_unused,@int_mathFault,@int_keyboard,@int_print,@int_printline,@int_newline,@int_clearscreen}
+int_serialout:
+	call serialout
+	ret
+
+int_serialin:
+	call serialin
+	ret
+
+int_readdisk:
+	call readdisk
+	ret
+
+ptr[25] biosidt {@int_divByZero,@int_trapFlag,@int_nmi,@int_breakpoint,@int_overflow,@int_bounds,@int_invalidOpcode,@int_unused,@int_doubleFault,@int_unused,@int_unused,@int_unused,@int_stackFault,@int_generalProtectionFault,@int_pageFault,@int_unused,@int_mathFault,@int_keyboard,@int_print,@int_printline,@int_newline,@int_clearscreen,@int_serialout,@int_serialin,@int_readdisk}
 
 initbiosidt:
 	mov al, 0
@@ -72,6 +84,6 @@ initbiosidt:
 		call set_idt
 		add al, 1
 		add ecx, 2
-		cmp al, 22
+		cmp al, 25
 		jl copyidt
 		ret
